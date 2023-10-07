@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable=bad-indentation
+disable=import-error
+; [MASTER]
+; init-hook='app/settings.py'
