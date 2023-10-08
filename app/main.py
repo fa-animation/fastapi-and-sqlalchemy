@@ -1,9 +1,11 @@
 """main file where api is started"""
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from app.config.settings import settings
 from app.router import users_router
+from .database import connect
 
 app = FastAPI(
   title= settings.api_title,
@@ -22,6 +24,11 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup():
+  connect.criar_bd()
+  print('Create database')
 
 @app.get("/")
 def redirect_docs() -> dict:
