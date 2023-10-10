@@ -2,24 +2,24 @@
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-  """file that loads all env.
-  This class contains the following settings:
-  * **api_title:** The title of the API.
-  * **api_version:** The version of the API.
-  * **api_description:** A description of the API.
-  * **api_contact_name:** The name of the contact person for the API.
-  * **api_contact_email:** The email address of the contact person for the API.
+  """arquivo que carrega todas as variáveis de ambiente.
+  Esta classe contém as seguintes configurações:
+  * **api_title:** O título da API.
+  * **api_version:** A versão da API.
+  * **api_description:** Uma descrição da API.
+  * **api_contact_name:** O nome da pessoa de contato da API.
+  * **api_contact_email:** O endereço de e-mail da pessoa de contato da API.
 
-  These settings are loaded from the `.env` file by default.
+  Estas configurações são carregadas do arquivo `.env` por padrão.
   """
   api_title: str
   api_version: str
   api_description:str
   api_contact_name:str
   api_contact_email: str
-
+  
   class Config:
-    """Class config fastapi"""
+    """Leitura do .env"""
     env_file = ".env"
 
 settings = Settings()
