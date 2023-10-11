@@ -1,7 +1,7 @@
 from typing import List
+from fastapi import status, APIRouter, Response, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.database import connect
-from fastapi import status, APIRouter, HTTPException, Depends
 
 from app.schemas.schema import Produto
 from app.repository import produto_repository
@@ -37,3 +37,11 @@ def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   - Cria um novo produto
   """
   return produtolistRepo.save(produto, db)
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def deleteProduto(id: int, db: Session = Depends(connect.get_db)):
+  item_content = produtolistRepo.getById(id, db)
+  if not item_content:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
+  produtolistRepo.delete(item_content, db)
+  return Response(status_code=status.HTTP_204_NO_CONTENT)
