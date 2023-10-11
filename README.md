@@ -50,6 +50,12 @@ api_contact_email="teste@gmail.com"
 
 A documentação da API pode ser acessada em http://localhost:8000/docs.
 
+
+Ativar o env no fish
+```bash
+. venv/bin/activate.fish
+```
+
 ### Licença
 
 Este template é licenciado sob a licença MIT.
