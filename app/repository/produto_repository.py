@@ -12,4 +12,4 @@ class ProdutoRepositorio(Repository):
     return getAllProduto.all()
 
   def getById(self, id: str, db:Session) -> Produto:
-    pass
+    return db.query(models.Produto).filter(models.Produto.id == id).first()

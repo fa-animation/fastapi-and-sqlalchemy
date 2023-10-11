@@ -24,9 +24,8 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-@app.on_event("startup")
-async def startup():
-  connect.criar_bd()
+
+connect.criar_bd()
 
 @app.get("/")
 def redirect_docs() -> dict:

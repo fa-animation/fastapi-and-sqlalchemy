@@ -14,8 +14,17 @@ router = APIRouter(
 )
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[Produto])
-def users(db: Session = Depends(connect.get_db)):
+def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
   GET ALL
   """
   return produtolistRepo.getAll(db)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
+def getProdutoById(id: str, db: Session = Depends(connect.get_db)):
+  """
+  GET ONE
+  """
+  produtoId = produtolistRepo.getById(id, db)
+  if not produtoId:
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
+  return produtoId

@@ -13,8 +13,9 @@ class Produto(BaseModel):
   """
   id: Optional[str] = None
   nome: str
-  descricao: Union[str, None] = None
-  valor: float
+  detalhe: Union[str, None] = None
+  preco: float
+  disponivel: bool
   class Config:
     orm_mode = True
   
