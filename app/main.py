@@ -27,7 +27,7 @@ app.add_middleware(
 
 connect.criar_bd()
 
-@app.get("/", status.HTTP_308_PERMANENT_REDIRECT)
+@app.get("/", status_code=status.HTTP_308_PERMANENT_REDIRECT)
 def redirect_docs() -> dict:
   """Redirect to /docs"""
   return RedirectResponse(url='/docs')
