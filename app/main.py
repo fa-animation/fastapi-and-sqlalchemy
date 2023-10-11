@@ -1,5 +1,5 @@
 """main file where api is started"""
-from fastapi import FastAPI
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from app.config.settings import settings
@@ -24,13 +24,12 @@ app.add_middleware(
   allow_headers=["*"],
 )
 
-@app.on_event("startup")
-async def startup():
-  connect.criar_bd()
 
-@app.get("/")
+connect.criar_bd()
+
+@app.get("/", status_code=status.HTTP_308_PERMANENT_REDIRECT)
 def redirect_docs() -> dict:
   """Redirect to /docs"""
   return RedirectResponse(url='/docs')
 
-app.include_router(produto_router.router)
+app.include_router(produto_router.router, prefix="/produto", tags=["produto"])
