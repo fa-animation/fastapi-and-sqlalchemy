@@ -11,3 +11,6 @@ class Repository(ABC):
   @abstractmethod
   def save(self, model):
       pass
+  @abstractmethod
+  def delete(self, item_content):
+      pass

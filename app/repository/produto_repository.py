@@ -25,3 +25,8 @@ class ProdutoRepositorio(Repository):
     except IntegrityError as err:
       db.rollback()
       raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"{err}" )
+    
+  def delete(self, item_content, db: Session):
+    db.delete(item_content)
+    db.commit()
+    return item_content
