@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from .repository import Repository
+from sqlalchemy.exc import IntegrityError
 from app.models import models
 from app.schemas.produto_schema import Produto
 
@@ -11,5 +12,16 @@ class ProdutoRepositorio(Repository):
     getAllProduto = db.query(models.Produto).offset(skip).limit(limit)
     return getAllProduto.all()
 
-  def getById(self, id: str, db:Session) -> Produto:
+  def getById(self, id: int, db:Session) -> Produto:
     return db.query(models.Produto).filter(models.Produto.id == id).first()
+  
+  def save(self, produto, db: Session):
+    produto_db = models.Produto(**produto.dict())
+    try:
+      db.add(produto_db)
+      db.commit()
+      db.refresh(produto_db)
+      return produto_db
+    except IntegrityError as err:
+      db.rollback()
+      raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"{err}" )

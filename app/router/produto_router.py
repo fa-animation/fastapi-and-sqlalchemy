@@ -20,7 +20,7 @@ def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
   return produtolistRepo.getAll(db)
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
-def getProdutoById(id: str, db: Session = Depends(connect.get_db)):
+def getProdutoById(id: int, db: Session = Depends(connect.get_db)):
   """
   GET ONE
   """
@@ -28,3 +28,10 @@ def getProdutoById(id: str, db: Session = Depends(connect.get_db)):
   if not produtoId:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
   return produtoId
+
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Produto)
+def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
+  """
+  CREATE
+  """
+  return produtolistRepo.save(produto, db)

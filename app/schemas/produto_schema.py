@@ -11,9 +11,9 @@ class Produto(BaseModel):
   * **descricao:** A descrição do produto. Este atributo é opcional.
   * **valor:** O valor do produto. Este atributo é obrigatório.  
   """
-  id: Optional[str] = None
+  id: Optional[int] = None
   nome: str
-  detalhe: Union[str, None] = None
+  detalhes: Union[str, None] = None
   preco: float
   disponivel: bool
   class Config:

@@ -6,5 +6,8 @@ class Repository(ABC):
   def getAll(self, skip: int = 0, limit: int = 100):
       pass
   @abstractmethod
-  def getById(self, id: str):
+  def getById(self, id: int):
+      pass
+  @abstractmethod
+  def save(self, model):
       pass
