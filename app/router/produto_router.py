@@ -3,26 +3,27 @@ from sqlalchemy.orm import Session
 from app.database import connect
 from fastapi import status, APIRouter, HTTPException, Depends
 
-from app.schemas.produto_schema import Produto
+from app.schemas.schema import Produto
 from app.repository import produto_repository
 
 produtolistRepo = produto_repository.ProdutoRepositorio()
 
-router = APIRouter(
-  prefix="/produto",
-  tags=["produto"],
-)
+router = APIRouter()
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[Produto])
 def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
   GET ALL
+  - Listagem de todos produtos
+  - Caso não tenha, será retornado uma lista vazia
   """
   return produtolistRepo.getAll(db)
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
 def getProdutoById(id: int, db: Session = Depends(connect.get_db)):
   """
-  GET ONE
+  GET BY ID
+  - Busca um produto pelo id
+  - Caso não exista, será retornado um erro
   """
   produtoId = produtolistRepo.getById(id, db)
   if not produtoId:
@@ -33,5 +34,6 @@ def getProdutoById(id: int, db: Session = Depends(connect.get_db)):
 def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   """
   CREATE
+  - Cria um novo produto
   """
   return produtolistRepo.save(produto, db)

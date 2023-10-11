@@ -3,7 +3,7 @@ from fastapi import HTTPException, status
 from .repository import Repository
 from sqlalchemy.exc import IntegrityError
 from app.models import models
-from app.schemas.produto_schema import Produto
+from app.schemas.schema import Produto
 
 
 class ProdutoRepositorio(Repository):
