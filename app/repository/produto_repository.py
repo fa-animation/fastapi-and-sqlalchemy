@@ -4,6 +4,7 @@ from .repository import Repository
 from sqlalchemy.exc import IntegrityError
 from app.models import models
 from app.schemas.schema import Produto
+from uuid import UUID
 
 
 class ProdutoRepositorio(Repository):
@@ -12,7 +13,7 @@ class ProdutoRepositorio(Repository):
     getAllProduto = db.query(models.Produto).offset(skip).limit(limit)
     return getAllProduto.all()
 
-  def getById(self, id: int, db:Session) -> Produto:
+  def getById(self, id: UUID, db:Session) -> Produto:
     return db.query(models.Produto).filter(models.Produto.id == id).first()
   
   def save(self, produto, db: Session):
