@@ -2,6 +2,7 @@ from typing import List
 from fastapi import status, APIRouter, Response, HTTPException, Depends
 from sqlalchemy.orm import Session
 from app.database import connect
+from uuid import UUID
 
 from app.schemas.schema import Produto
 from app.repository import produto_repository
@@ -19,7 +20,7 @@ def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
   return produtolistRepo.getAll(db)
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
-def getProdutoById(id: int, db: Session = Depends(connect.get_db)):
+def getProdutoById(id: UUID, db: Session = Depends(connect.get_db)):
   """
   GET BY ID
   - Busca um produto pelo id
@@ -39,7 +40,7 @@ def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   return produtolistRepo.save(produto, db)
 
 @router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def deleteProduto(id: int, db: Session = Depends(connect.get_db)):
+def deleteProduto(id: UUID, db: Session = Depends(connect.get_db)):
   item_content = produtolistRepo.getById(id, db)
   if not item_content:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
