@@ -1,8 +1,9 @@
-# fastapi get started
+# fastapi e sqlalchemy
 
-Template com algumas confiruações simples do fasatapi
+Template com algumas confiruações simples do fasatapi e do sqlAlchemy
 
 * `main.py`: O código da API.
+* `alembic`: Registra as migrações do banco de dados.
 * `requirements.txt`: Uma lista dos pacotes Python necessários.
 * `.env`: Um arquivo de configuração para a API.
 
@@ -10,6 +11,17 @@ Template com algumas confiruações simples do fasatapi
 
 Para instalar os pacotes Python necessários, execute os seguintes comandos:
 
+1 - Criar o venv do Python
+```bash
+python3 -m venv venv
+```
+
+2 - Entrar no venv (ex: fish)
+```bash
+. venv/bin/activate.fish
+```
+
+3 - instalar os pacotes Python
 ```bash
 pip install -r requirements.txt
 ```
@@ -21,6 +33,8 @@ Para executar a API, execute o seguinte comando:
 ```bash
 ./run.sh
 ```
+
+`http://localhost:8000`
 
 ### .env
 
@@ -38,7 +52,7 @@ O arquivo `.env` contém as seguintes configurações:
 
 Um exemplo de `.env` é o seguinte:
 
-```
+```.env
 api_title="FastAPI docs"
 api_version="0.0.5"
 api_description="Teste de configurações de arquivos com .env"
@@ -48,14 +62,4 @@ api_contact_email="teste@gmail.com"
 
 ### Documentação
 
-A documentação da API pode ser acessada em http://localhost:8000/docs.
-
-
-Ativar o env no fish
-```bash
-. venv/bin/activate.fish
-```
-
-### Licença
-
-Este template é licenciado sob a licença MIT.
+A documentação da API pode ser acessada em `http://localhost:8000/docs``
