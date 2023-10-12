@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean
+import uuid
+from sqlalchemy import Column, Uuid,String, Float, Boolean
 from app.database.connect import Base
 
 class Produto(Base):
   __tablename__ = 'produto'
 
-  id = Column(Integer, primary_key=True, index=True)
+  id = Column(Uuid(as_uuid=True), primary_key=True, index=True, default=uuid.uuid4)
   nome = Column(String)
   detalhes = Column(String)
   preco = Column(Float)
