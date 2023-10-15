@@ -1,10 +1,10 @@
+from uuid import UUID
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 from .repository import Repository
 from sqlalchemy.exc import IntegrityError
-from app.models import models
+from app.core.models import models
 from app.schemas.schema import Produto
-from uuid import UUID
 
 
 class ProdutoRepositorio(Repository):

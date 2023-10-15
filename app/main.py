@@ -2,9 +2,9 @@
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-from app.config.settings import settings
-from app.router import produto_router
-from .database import connect
+from .config.settings import settings
+from .core.router import produto_router
+from .core.database import connect
 
 app = FastAPI(
   title= settings.api_title,
@@ -23,7 +23,6 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
-
 
 connect.create_database()
 

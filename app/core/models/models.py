@@ -1,6 +1,6 @@
 import uuid
 from sqlalchemy import Column, Uuid,String, Float, Boolean
-from app.database.connect import Base
+from app.core.database.connect import Base
 
 class Produto(Base):
   __tablename__ = 'produto'

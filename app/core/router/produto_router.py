@@ -1,11 +1,11 @@
 from typing import List
+from uuid import UUID
 from fastapi import status, APIRouter, Response, HTTPException, Depends
 from sqlalchemy.orm import Session
-from app.database import connect
-from uuid import UUID
+from app.core.database import connect
 
 from app.schemas.schema import Produto
-from app.repository import produto_repository
+from app.core.repository import produto_repository
 
 produtolistRepo = produto_repository.ProdutoRepositorio()
 
