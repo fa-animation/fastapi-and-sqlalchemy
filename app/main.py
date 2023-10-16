@@ -31,4 +31,4 @@ def redirect_docs() -> dict:
   """Redirect to /docs"""
   return RedirectResponse(url='/docs')
 
-app.include_router(produto_router.router, prefix="/produto", tags=["produto"])
+app.include_router(produto_router.router, prefix="/produto", tags=["/produto"])
