@@ -14,17 +14,25 @@ router = APIRouter()
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[Produto])
 def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
-  GET ALL
-  - Listagem de todos produtos
-  - Caso não tenha, será retornado uma lista vazia
+  Obter todos os produtos do banco de dados.
+
+  Retorna:
+    - List[Produto]: Uma lista de todos os produtos.
   """
   return produtolistRepo.getAll(db)
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
 def getProdutoById(id: UUID, db: Session = Depends(connect.get_db)):
   """
-  GET BY ID
-  - Busca um produto pelo id
-  - Caso não exista, será retornado um erro
+  Buscar um produto pelo id (GET)
+
+  Parameters:
+    - id (UUID): O ID do produto a ser atualizado.
+  
+  Raises:
+    - HTTPException: Se o produto com o ID especificado não for encontrado.
+
+  Returns:
+    - Produto: O produto recuperado.
   """
   produtoId = produtolistRepo.getById(id, db)
   if not produtoId:
@@ -34,15 +42,53 @@ def getProdutoById(id: UUID, db: Session = Depends(connect.get_db)):
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=Produto)
 def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   """
-  CREATE
-  - Cria um novo produto
+  Criar (POST) um novo Produto.
+
+  Returns:
+    - produto (Produto): O objeto Produto criado.
   """
   return produtolistRepo.save(produto, db)
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
-def deleteProduto(id: UUID, db: Session = Depends(connect.get_db)):
+@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
+def updateProduto(id: UUID, produto: Produto, db: Session = Depends(connect.get_db)):
+  """
+  Atualiza (PUT) um produto com o ID especificado.
+
+  Parameters:
+    - id (UUID): O ID do produto a ser atualizado.
+    - produto (Produto): O objeto de produto atualizado.
+
+  Raises:
+    - HTTPException: Se o produto com o ID especificado não for encontrado.
+      
+  Returns:
+    - Produto: O produto atualizado.
+  """
   item_content = produtolistRepo.getById(id, db)
   if not item_content:
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
+  updated_user = produtolistRepo.update(item_content, produto, db)
+  return updated_user
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def deleteProduto(id: UUID, db: Session = Depends(connect.get_db)):
+  """
+  Exclui (DELETE) um produto da lista de produtos.
+
+  Parameters:
+  - id (UUID): O ID do produto a ser excluído.
+
+  Raise:
+  - HTTPException: Caso o produto não exista 404 (NOT FOUND)
+
+  Returns:
+  - Resposta com um código de status 204 (NO CONTENT).
+  """
+  item_content = produtolistRepo.getById(id, db)
+  if not item_content:
+    raise HTTPException(
+      status_code=status.HTTP_404_NOT_FOUND,
+      detail=f"Produto não encontrado com esse id: {id}"
+    )
   produtolistRepo.delete(item_content, db)
   return Response(status_code=status.HTTP_204_NO_CONTENT)

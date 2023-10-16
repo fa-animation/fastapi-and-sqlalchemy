@@ -12,5 +12,8 @@ class Repository(ABC):
   def save(self, model):
       pass
   @abstractmethod
+  def update(self, item_content, schema):
+      pass
+  @abstractmethod
   def delete(self, item_content):
       pass
