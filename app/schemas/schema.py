@@ -1,6 +1,14 @@
 from .base import base_model_schema
 
 class Produto(base_model_schema.PrudutoBase):
+  """
+    - id: Optional[UUID] = None
+    - nome: str
+    - detalhes: Union[str, None] = None
+    - preco: float
+    - disponivel: bool
+    - created_at: Optional[datetime] = None
+  """
   class Config:
     from_attributes = True
     json_schema_extra = {

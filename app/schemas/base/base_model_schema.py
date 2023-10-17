@@ -1,6 +1,7 @@
-from typing import Union, Optional
-from pydantic import BaseModel
 from uuid import UUID
+from pydantic import BaseModel
+from typing import Union, Optional
+from datetime import datetime
 
 class PrudutoBase(BaseModel):
   id: Optional[UUID] = None
@@ -8,3 +9,4 @@ class PrudutoBase(BaseModel):
   detalhes: Union[str, None] = None
   preco: float
   disponivel: bool
+  created_at: Optional[datetime] = None

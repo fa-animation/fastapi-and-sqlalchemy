@@ -2,8 +2,8 @@ from typing import List
 from uuid import UUID
 from fastapi import status, APIRouter, Response, HTTPException, Depends
 from sqlalchemy.orm import Session
+#importações locais
 from app.core.database import connect
-
 from app.schemas.schema import Produto
 from app.core.repository import produto_repository
 
@@ -11,7 +11,7 @@ produtolistRepo = produto_repository.ProdutoRepositorio()
 
 router = APIRouter()
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=List[Produto])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[Produto], summary="Obter todos os produtos")
 def getAllProdutos(db: Session = Depends(connect.get_db)):
   """
   Obter todos os produtos do banco de dados.
@@ -20,7 +20,18 @@ def getAllProdutos(db: Session = Depends(connect.get_db)):
     - List[Produto]: Uma lista de todos os produtos.
   """
   return produtolistRepo.getAll(db)
-@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
+
+@router.get("/last", status_code=status.HTTP_200_OK, response_model=List[Produto], summary="Obter os produto mais recentes")
+def getLastProduto(db: Session = Depends(connect.get_db)):
+  """
+  Obter o ultimo produto do banco de dados.
+
+  Retorna:
+    - Produto: O objeto `Produto` com o `id` correspondente.
+  """
+  return produtolistRepo.getLast(db)
+
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=Produto, summary="Obter um produto por ID")
 def getProdutoById(id: UUID, db: Session = Depends(connect.get_db)):
   """
   Buscar um produto pelo id (GET)
@@ -39,7 +50,7 @@ def getProdutoById(id: UUID, db: Session = Depends(connect.get_db)):
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Produto não encontrado com esse id: {id}")
   return produtoId
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Produto)
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Produto, summary="Criar um novo produto")
 def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   """
   Criar (POST) um novo Produto.
@@ -49,7 +60,7 @@ def createProduto(produto: Produto, db: Session = Depends(connect.get_db)):
   """
   return produtolistRepo.save(produto, db)
 
-@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=Produto)
+@router.put("/{id}", status_code=status.HTTP_200_OK, response_model=Produto, summary="Atualizar um produto")
 def updateProduto(id: UUID, produto: Produto, db: Session = Depends(connect.get_db)):
   """
   Atualiza (PUT) um produto com o ID especificado.
@@ -70,7 +81,7 @@ def updateProduto(id: UUID, produto: Produto, db: Session = Depends(connect.get_
   updated_user = produtolistRepo.update(item_content, produto, db)
   return updated_user
 
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT, summary="Excluir um produto")
 def deleteProduto(id: UUID, db: Session = Depends(connect.get_db)):
   """
   Exclui (DELETE) um produto da lista de produtos.
