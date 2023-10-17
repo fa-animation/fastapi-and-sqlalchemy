@@ -1,6 +1,8 @@
 import uuid
-from sqlalchemy import Column, Uuid,String, Float, Boolean
+from sqlalchemy import Column, Uuid, DateTime, String, Float, Boolean
+from sqlalchemy.sql import func
 from app.core.database.connect import Base
+from datetime import datetime
 
 class Produto(Base):
   __tablename__ = 'produto'
@@ -10,3 +12,4 @@ class Produto(Base):
   detalhes = Column(String)
   preco = Column(Float)
   disponivel = Column(Boolean)
+  created_at = Column(DateTime(timezone=True), server_default=func.now(args=['utc']))

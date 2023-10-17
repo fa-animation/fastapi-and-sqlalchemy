@@ -1,6 +1,7 @@
 from uuid import UUID
 from typing import List
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from fastapi import HTTPException, status
 from .repository import Repository
 from sqlalchemy.exc import IntegrityError
@@ -19,16 +20,28 @@ class ProdutoRepositorio(Repository):
       - limit Optional[int] = 100: O número máximo de registros a serem recuperados.
 
     Retorna:
-      - List[Produto]: Uma lista de objetos Produto representando os registros recuperados.
+      - List[Produto]: Uma lista de Produto representando os registros recuperados.
     """
     getAllProduto = db.query(models.Produto).offset(skip).limit(limit)
     return getAllProduto.all()
+  def getLast(self, db: Session) -> List[Produto]:
+    """
+    #### Recupera todos os registros do banco de dados.
 
+    Argumentos:
+      - db (Session): A sessão do banco de dados.
+
+    Retorna:
+      - List[Produto]: Uma lista de Produto representando os últimos registros recuperados.
+    """    
+    getLastedProduto = db.query(models.Produto).order_by(desc(models.Produto.created_at))
+    return getLastedProduto.all()
+  
   def getById(self, id: UUID, db:Session) -> Produto:
     """
     #### Recupera um objeto `Produto` do banco de dados com base no `id` fornecido.
 
-    Parâmetros:
+    Argumentos:
       - id (UUID): O identificador único do objeto `Produto`.
       - db (Session): O objeto de sessão do banco de dados.
 
@@ -42,7 +55,7 @@ class ProdutoRepositorio(Repository):
     #### Salva um produto no banco de dados.
 
     Argumentos:
-      - produto (dict): Os dados do produto como um dicionário.
+      - produto (Produto): Os dados do produto como um dicionário.
       - db (Session): O objeto de sessão do banco de dados.
 
     Retorna:
@@ -51,7 +64,7 @@ class ProdutoRepositorio(Repository):
     Raise:
       - HTTPException: Se houver um erro de integridade durante a operação de salvamento.
     """
-    produto_db = models.Produto(**produto.dict())
+    produto_db = models.Produto(**produto.model_dump())
     try:
       db.add(produto_db)
       db.commit()
